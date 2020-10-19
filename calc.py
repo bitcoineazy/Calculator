@@ -18,33 +18,52 @@ class Example(Frame):
 
         self.entry = Entry(self, width=50)
         self.entry.grid(row=0, columnspan=4)
-        button_plus = Button(self, text='плюс')
-        button_plus.grid(row=1, column=0)
-        button_minus = Button(self, text='минус')
-        button_minus.grid(row=1, column=1)
-        button_multiply = Button(self, text='умножить')
-        button_multiply.grid(row=1, column=2)
+        self.button_plus = Button(self, text='плюс')
+        self.button_plus.grid(row=1, column=0)
+        self.button_minus = Button(self, text='минус')
+        self.button_minus.grid(row=1, column=1)
+        self.button_multiply = Button(self, text='умножить')
+        self.button_multiply.grid(row=1, column=2)
         self.button_erase = Button(self, text='очистить')
         self.button_erase.grid(row=1,column=3)
-        button_equally = Button(self, text='равно')
-        button_equally.place()
-        self.button_erase.bind('<Button-1>', self.button_erase_clicked)
+        self.button_equally = Button(self, text='равно')
+        self.button_equally.grid(row=2, column=2)
+        self.button_cnk = Button(self, text='C из n по k')
+        self.button_cnk.grid(row=2, column=3)
+        self.button_division = Button(self, text='делить')
+        self.button_division.grid(row=2, column=1)
         self.pack()
-
+        self.button_erase.bind('<Button-1>', self.button_erase_clicked)
+        self.button_plus.bind('<Button-1>', self.button_plus_clicked)
+        self.button_minus.bind('<Button-1>', self.button_minus_clicked)
+        self.button_multiply.bind('<Button-1>', self.button_multiply_clicked)
+        self.button_division.bind('<Button-1>', self.button_division_clicked)
 
 
     def button_erase_clicked(self, event):
         print('очистились')
         self.entry.delete(0, END)
 
+    def button_plus_clicked(self, event):
+        print('плюс')
+        self.entry.insert(END, ' плюс ')
 
-    def calc(self, input):
-        if input == 'равно':
-            input_str = r'\D+'
+    def button_minus_clicked(self, event):
+        print('минус')
+        self.entry.insert(END, ' минус ')
+
+    def button_multiply_clicked(self, event):
+        print('умножить')
+        self.entry.insert(END, ' умножить ')
+
+    def button_division_clicked(self, event):
+        print('поделили')
+        self.entry.insert(END, ' делить ')
+
 
 
     def centerWindow(self):
-        w = 290
+        w = 390
         h = 150
 
         sw = self.parent.winfo_screenwidth()
