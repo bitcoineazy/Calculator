@@ -5,6 +5,14 @@ import re
 
 
 class Example(Frame):
+    m = {"плюс": ["+", 0], "минус": ["-", 1], "делить": ["/", 2], "умножить": ["*", 3], "на": ["*", 3]}
+    a = {"один": 1, "два": 2, "три": 3, "четыре": 4, "пять": 5, "шесть": 6, "семь": 7, "восемь": 8, "девять": 9,
+         "ноль": 0}
+    b = {"десять": 10, "одиннадцать": 11, "двенадцать": 12, "тринадцать": 13, "четырнадцать": 14, "пятнадцать": 15,
+         "шестнадцать": 16, "семнадцать": 17, "восемнадцать": 18, "девятнадцать": 19}
+    c = {"двадцать": 20, "тридцать": 30, "сорок": 40, "пятьдесят": 50, "шестьдесят": 60, "семьдесят": 70,
+         "восемьдесят": 80,
+         "девяносто": 90}
 
     def __init__(self, parent):
         Frame.__init__(self, parent, background="white")
@@ -65,13 +73,6 @@ class Example(Frame):
         print('c из n по k')
         self.entry.delete(0, END)
         self.entry.insert(END, ' C из n=  по k= ')
-        str = self.entry.get()
-        str_com = str.split()
-        c=[]
-        for var in str_com:
-            if var.isdigit():
-                c.append(var)
-        print(c)
 
     def button_equally_clicked(self, event):
         print('равно')
@@ -99,6 +100,36 @@ class Example(Frame):
             else:
                 self.entry.delete(0, END)
                 self.entry.insert(0, '0')
+        if 'плюс' or 'минус' or 'умножить' in self.entry.get():
+            s = self.entry.get()
+            s.strip()
+            ind = 0
+            s1, s2 = (1, 1)
+            res = int()
+            s = re.split(r'\s', s)
+            while s != 'кон' and s != 'end':
+                if len(s) > 4 or len(s) < 2:
+                    print("Смотрите шаблон ввода")
+                    s = self.entry.get()
+                    s.strip()
+                    continue
+                for i in range(len(s)):
+                    if s[i] in m:
+                        ind = i
+                if ind == 0:
+                    print("Смотрите шаблон ввода")
+                    s = self.entry.get()
+                    s.strip()
+                    continue
+                s1 = self.inp(s[:ind])
+                s2 = self.inp(s[ind + 1:])
+                res = self.output1()
+                self_insert = f'{self.inp(s[:ind])} {m[s[ind]][0]} {self.inp(s[ind + 1:])} = {res}'
+                self.entry.insert(END, self_insert)
+
+                print("Ответ: ", res)
+                #s = input()
+                #s.strip()
 
     def centerWindow(self):
         w = 390
@@ -123,10 +154,10 @@ if __name__ == '__main__':
 
 m = {"плюс": ["+", 0], "минус": ["-", 1], "делить": ["/", 2], "умножить": ["*", 3], "на": ["*", 3]}
 a = {"один": 1, "два": 2, "три": 3, "четыре": 4, "пять": 5, "шесть": 6, "семь": 7, "восемь": 8, "девять": 9, "ноль": 0}
-b = {"десять": 10, "одиyнадцать": 11, "двенадцать": 12, "тринадцать": 13, "четырнадцать": 14, "пятнадцать": 15,
+b = {"десять": 10, "одиннадцать": 11, "двенадцать": 12, "тринадцать": 13, "четырнадцать": 14, "пятнадцать": 15,
      "шестнадцать": 16, "семнадцать": 17, "восемнадцать": 18, "девятнадцать": 19}
-c = {"двадцать": 20, "тридцать": 30, "сорок": 40, "дтьдесят": 50, "шестьдесят": 60, "семьдесят": 70, "восемьдесят": 80,
-     "десяносто": 90}
+c = {"двадцать": 20, "тридцать": 30, "сорок": 40, "пятьдесят": 50, "шестьдесят": 60, "семьдесят": 70, "восемьдесят": 80,
+     "девяносто": 90}
 
 
 def dd(s):
@@ -135,8 +166,6 @@ def dd(s):
         if i in s:
             return b[i]
     return 0
-
-
 
 def output1():
     global m, s, s1, s2
@@ -148,7 +177,6 @@ def output1():
         return s1 / s2
     if m[s[ind]][1] == 3:
         return s1 * s2
-
 
 def inp(s):
     global a, b
@@ -170,7 +198,6 @@ def inp(s):
         return "Введено неверные числа"
     k += 1
     return k
-
 
 s = input()
 s.strip()
@@ -196,7 +223,6 @@ while s != "кон" and s != "end":
     s2 = inp(s[ind + 1:])
     res = output1()
     print(inp(s[:ind]), m[s[ind]][0], inp(s[ind + 1:]), "=", res)
-
     print("Ответ: ", res)
     s = input()
     s.strip()
