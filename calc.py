@@ -38,7 +38,8 @@ class Example(Frame):
         self.button_minus.bind('<Button-1>', self.button_minus_clicked)
         self.button_multiply.bind('<Button-1>', self.button_multiply_clicked)
         self.button_division.bind('<Button-1>', self.button_division_clicked)
-
+        self.button_cnk.bind('<Button-1>', self.button_cnk_clicked)
+        self.button_equally.bind('<Button-1>', self.button_equally_clicked)
 
     def button_erase_clicked(self, event):
         print('очистились')
@@ -60,7 +61,44 @@ class Example(Frame):
         print('поделили')
         self.entry.insert(END, ' делить ')
 
+    def button_cnk_clicked(self, event):
+        print('c из n по k')
+        self.entry.delete(0, END)
+        self.entry.insert(END, ' C из n=  по k= ')
+        str = self.entry.get()
+        str_com = str.split()
+        c=[]
+        for var in str_com:
+            if var.isdigit():
+                c.append(var)
+        print(c)
 
+    def button_equally_clicked(self, event):
+        print('равно')
+        if 'C из' in self.entry.get():
+            str = self.entry.get()
+            str_com = str.split()
+            c = []
+            for var in str_com:
+                if var.isdigit():
+                    c.append(var)
+            print(c)
+            print(self.entry.get())
+            n = int(c[0])
+            k = int(c[1])
+            if 0 <= k <= n:
+                nn = 1
+                kk = 1
+                for t in range(1, min(k, n-k)+1):
+                    nn *= n
+                    kk *= t
+                    n -= 1
+                self.entry.delete(0, END)
+                self.entry.insert(0, nn // kk)
+                print(nn // kk)
+            else:
+                self.entry.delete(0, END)
+                self.entry.insert(0, '0')
 
     def centerWindow(self):
         w = 390
