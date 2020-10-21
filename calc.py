@@ -23,7 +23,6 @@ class Example(Frame):
         self.initUI()
 
     def initUI(self):
-
         self.entry = Entry(self, width=50)
         self.entry.grid(row=0, columnspan=4)
         self.button_plus = Button(self, text='плюс')
@@ -107,29 +106,64 @@ class Example(Frame):
             s1, s2 = (1, 1)
             res = int()
             s = re.split(r'\s', s)
-            while s != 'кон' and s != 'end':
-                if len(s) > 4 or len(s) < 2:
-                    print("Смотрите шаблон ввода")
-                    s = self.entry.get()
-                    s.strip()
-                    continue
-                for i in range(len(s)):
-                    if s[i] in m:
-                        ind = i
-                if ind == 0:
-                    print("Смотрите шаблон ввода")
-                    s = self.entry.get()
-                    s.strip()
-                    continue
-                s1 = self.inp(s[:ind])
-                s2 = self.inp(s[ind + 1:])
-                res = self.output1()
-                self_insert = f'{self.inp(s[:ind])} {m[s[ind]][0]} {self.inp(s[ind + 1:])} = {res}'
-                self.entry.insert(END, self_insert)
+            for i in range(len(s)):
+                if s[i] in self.m:
+                    ind = i
+            s1 = self.inp(s[:ind])
+            s2 = self.inp(s[ind + 1:])
 
-                print("Ответ: ", res)
+            self.entry.insert(END, res)
                 #s = input()
                 #s.strip()
+
+    def inp(self, s):
+
+        # if re.search(r'[a-z]|[0-9]', s,re.I):
+        #    return "Введен неверный символ"
+        k = self.dd(s)
+        if k > 0:
+            return k
+        k = -1
+        for i in self.c:
+            if i in s:
+                k += c[i]
+                break
+        for i in self.a:
+            if i in s:
+                k += self.a[i]
+                break
+        if k == -1:
+            return "Введено неверные числа"
+        k += 1
+        return k
+
+    def output1(self):
+        s = self.entry.get()
+        ind = 0
+        s1 = self.inp(s[:ind])
+        s2 = self.inp(s[ind + 1:])
+        if self.m[s[ind]][1] == 0:
+            print(s1 + s2)
+            self.entry.insert(END, (s1+s2))
+            return s1 + s2
+        if self.m[s[ind]][1] == 1:
+            print(s1 - s2)
+            return s1 - s2
+        if self.m[s[ind]][1] == 2:
+            print(s1 / s2)
+            return s1 / s2
+
+        if self.m[s[ind]][1] == 3:
+            print(s1 * s2)
+            return s1 * s2
+
+
+    def dd(self, s):
+        for i in self.b:
+            if i in s:
+                print(b[i])
+                return b[i]
+        return 0
 
     def centerWindow(self):
         w = 390
@@ -148,7 +182,13 @@ def main():
     ex = Example(root)
     root.mainloop()
 
-
+class Calculator(Example):
+    def dd(self, s):
+        for i in self.b:
+            if i in s:
+                print(b[i])
+                return b[i]
+        return 0
 if __name__ == '__main__':
     main()
 
