@@ -2,11 +2,7 @@ from tkinter import *
 import re
 
 
-
-
 class Example(Frame):
-
-
     def __init__(self, parent):
         Frame.__init__(self, parent, background="white")
         self.parent = parent
@@ -18,21 +14,21 @@ class Example(Frame):
     def initUI(self):
         self.entry = Entry(self, width=50)
         self.entry.grid(row=0, columnspan=4)
-        self.button_plus = Button(self, text='плюс')
+        self.button_plus = Button(self, text='плюс', width=8)
         self.button_plus.grid(row=1, column=0)
-        self.button_minus = Button(self, text='минус')
+        self.button_minus = Button(self, text='минус', width=8)
         self.button_minus.grid(row=1, column=1)
-        self.button_multiply = Button(self, text='умножить')
+        self.button_multiply = Button(self, text='умножить', width=8)
         self.button_multiply.grid(row=1, column=2)
-        self.button_erase = Button(self, text='очистить')
+        self.button_erase = Button(self, text='очистить', width=8)
         self.button_erase.grid(row=1,column=3)
-        self.button_equally = Button(self, text='равно')
-        self.button_equally.grid(row=2, column=2)
-        self.button_cnk = Button(self, text='C из n по k')
-        self.button_cnk.grid(row=2, column=3)
-        self.button_division = Button(self, text='делить')
+        self.button_equally = Button(self, text='равно', width=8)
+        self.button_equally.grid(row=2, column=3)
+        self.button_cnk = Button(self, text='C из n по k', width=8)
+        self.button_cnk.grid(row=2, column=2)
+        self.button_division = Button(self, text='делить', width=8)
         self.button_division.grid(row=2, column=1)
-        self.button_degree = Button(self, text='в степени')
+        self.button_degree = Button(self, text='в степени', width=8)
         self.button_degree.grid(row=2, column=0)
         self.pack()
         self.button_erase.bind('<Button-1>', self.button_erase_clicked)
@@ -94,7 +90,7 @@ class Example(Frame):
                     kk *= t
                     n -= 1
                 self.entry.delete(0, END)
-                self.entry.insert(0, nn // kk)
+                self.entry.insert(0, self.calc(nn // kk))
                 print(nn // kk)
             else:
                 self.entry.delete(0, END)
@@ -102,32 +98,68 @@ class Example(Frame):
         else:
             gets = self.entry.get()
             form = gets.split()
-            print(form[0])
-            num1 = self.calc(form[0])
-            num2 = self.calc(form[2])
-            print(num1, num2)
-            if 'плюс' in form:
-                result_plus = int(num1) + int(num2)
-                str_plus = self.calc(result_plus)
-                self.entry.insert(END, f' = {str_plus}')
-            elif 'минус' in form:
-                result_minus = int(num1) - int(num2)
-                str_minus = self.calc(result_minus)
-                self.entry.insert(END, f' = {str_minus}')
+            if 'минус' in form:
+                minus_index = form.index('минус')
+                num1_join = ' '.join(form[0:minus_index])
+                num2_join = ' '.join(form[minus_index:6])
+                num1 = self.calc(num1_join)
+                num2 = self.calc(num2_join)
+            elif 'плюс' in form:
+                plus_index = form.index('плюс')
+                num1_join = ' '.join(form[0:plus_index])
+                num2_join = ' '.join(form[plus_index:6])
+                num1 = self.calc(num1_join)
+                num2 = self.calc(num2_join)
             elif 'умножить' in form:
-                result_multiply = int(num1) * int(num2)
-                str_multiply = self.calc(result_multiply)
-                self.entry.insert(END, f' = {str_multiply}')
+                multiply_index = form.index('умножить')
+                num1_join = ' '.join(form[0:multiply_index])
+                num2_join = ' '.join(form[multiply_index:6])
+                num1 = self.calc(num1_join)
+                num2 = self.calc(num2_join)
             elif 'делить' in form:
-                result_division = int(num1) / int(num2)
-                str_division = self.calc(result_division)
-                self.entry.insert(END, f' = {str_division}')
+                division_index = form.index('делить')
+                num1_join = ' '.join(form[0:division_index])
+                num2_join = ' '.join(form[division_index:6])
+                num1 = self.calc(num1_join)
+                num2 = self.calc(num2_join)
             elif 'степень' in form:
-                result_degree = int(num1) ** int(num2)
-                str_degree = self.calc(result_degree)
-                self.entry.insert(END, f' = {str_degree}')
+                degree_index = form.index('степень')
+                num1_join = ' '.join(form[0:degree_index])
+                num2_join = ' '.join(form[degree_index:6])
+                num1 = self.calc(num1_join)
+                num2 = self.calc(num2_join)
 
-    import re
+            if type(num1) and type(num2) == int:
+                if 'плюс' in form:
+                    result_plus = num1 + num2
+                    str_plus = self.calc(result_plus)
+                    self.entry.insert(END, f' = {str_plus}')
+                    if result_plus == 0:
+                        self.entry.insert(END, f'ноль')
+                elif 'минус' in form:
+                    result_subtraction = num1 - num2
+                    str_subtraction = self.calc(result_subtraction)
+                    self.entry.insert(END, f' = {str_subtraction}')
+                    if result_subtraction == 0:
+                        self.entry.insert(END, f'ноль')
+                elif 'умножить' in form:
+                    result_multiply = num1 * num2
+                    str_multiply = self.calc(result_multiply)
+                    self.entry.insert(END, f' = {str_multiply}')
+                    if result_multiply == 0:
+                        self.entry.insert(END, f'ноль')
+                elif 'делить' in form:
+                    result_division = num1 / num2
+                    str_division = self.calc(result_division)
+                    self.entry.insert(END, f' = {str_division}')
+                    if result_division == 0:
+                        self.entry.insert(END, f'ноль')
+                elif 'степень' in form:
+                    result_degree = num1 ** num2
+                    str_degree = self.calc(result_degree)
+                    self.entry.insert(END, f' = {str_degree}')
+                    if result_degree == 0:
+                        self.entry.insert(END, f'ноль')
 
     def calc(self, var):
         a = {"один": 1, "два": 2, "три": 3, "четыре": 4, "пять": 5, "шесть": 6, "семь": 7, "восемь": 8,
@@ -147,7 +179,7 @@ class Example(Frame):
 
              800: "восемьсот", 900: "девятьсот"}
         th = {1: ['', "один", "два", 'три', 'четыре'],
-              1000: ['тысяч ', 'одиа тысячя ', 'две тысячи ', 'три тысячи ', 'четыре тысячи '],
+              1000: ['тысяч ', 'одна тысяча ', 'две тысячи ', 'три тысячи ', 'четыре тысячи '],
               1000000: ['миллионов ', 'один миллион', 'два миллиона ', 'три миллиона ', 'четыре миллиона '],
               1000000000: ['миллиардов ', 'один миллиард ', 'два миллиарда ', 'три миллиарда ', 'четыре миллиарда ']}
 
@@ -174,7 +206,6 @@ class Example(Frame):
                         for k, v in c.items():  # Проверка десятков
                             if v == rch % 100 // 10 * 10:
                                 res = str(k) + " " + res
-
 
                     else:  # Проверка на значения от 10 до 19
                         res = th[kts][0] + res
@@ -235,14 +266,12 @@ class Example(Frame):
             return rez
 
         def dd(s, b):  # Функция проверки и нахождния от 10 - 19
-
             for i in b:
                 if i in s:
                     return b[i]
             return 0
 
         def inp(s, a, b, c):  # Проверка от 0 - 9 и 20 - 99
-
             k = dd(s, b)  # Проверка от 10-19
             if k > 0:
                 return k
@@ -270,29 +299,29 @@ class Example(Frame):
             var = re.split(r'\s+', var)
             return inp(var, a, b, c)
         elif type(var) == int:
-            return intg(a, b, c, d, th, var)
+            if var < 0:
+                return 'минус ' + intg(a, b, c, d, th, abs(var))
+            else:
+                return intg(a, b, c, d, th, var)
         elif type(var) == float:
-            return flo(a, b, c, d, th, var)
-
-
+            if var < 0:
+                return 'минус ' + flo(a, b, c, d, th, abs(var))
+            else:
+                return flo(a, b, c, d, th, var)
 
     def centerWindow(self):
         w = 300
         h = 80
-
         sw = self.parent.winfo_screenwidth()
         sh = self.parent.winfo_screenheight()
-
         x = (sw - w) / 2
         y = (sh - h) / 2
         self.parent.geometry('%dx%d+%d+%d' % (w, h, x, y))
-
 
 def main():
     root = Tk()
     ex = Example(root)
     root.mainloop()
-
 
 if __name__ == '__main__':
     main()

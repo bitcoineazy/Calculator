@@ -145,5 +145,5 @@ def calc(var):
     elif type(var) == float:
         return flo(a, b, c, d, th, var)
 
-var = 'девять целых одна десятых'
-print(calc(var))
+var = 1
+print(calc('тридцать четыре'))
