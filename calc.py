@@ -71,17 +71,18 @@ class Example(Frame):
 
     def button_equally_clicked(self, event):
         print('равно')
-        if 'C из' in self.entry.get():
+        if 'С из' in self.entry.get() or 'С из' in self.entry.get():
             str = self.entry.get()
             str_com = str.split()
-            c = []
-            for var in str_com:
-                if var.isdigit():
-                    c.append(var)
-            print(c)
-            print(self.entry.get())
-            n = int(c[0])
-            k = int(c[1])
+            n_index = str_com.index('n=')
+            k_index = str_com.index('k=')
+            num1_join = ' '.join(str_com[n_index+1:k_index])
+            num2_join = ' '.join(str_com[k_index+1:9])
+            num1 = self.calc(num1_join)
+            num2 = self.calc(num2_join)
+            n = num1
+            k = num2
+            print(num1_join, num2_join)
             if 0 <= k <= n:
                 nn = 1
                 kk = 1
@@ -92,6 +93,28 @@ class Example(Frame):
                 self.entry.delete(0, END)
                 self.entry.insert(0, self.calc(nn // kk))
                 print(nn // kk)
+            else:
+                self.entry.delete(0, END)
+                self.entry.insert(0, '0')
+        elif 'А из' in self.entry.get() or 'A из' in self.entry.get():
+            str = self.entry.get()
+            str_com = str.split()
+            n_index = str_com.index('n=')
+            k_index = str_com.index('k=')
+            num1_join = ' '.join(str_com[n_index+1:k_index])
+            num2_join = ' '.join(str_com[k_index+1:9])
+            num1 = self.calc(num1_join)
+            num2 = self.calc(num2_join)
+            if 0 <= k <= n:
+                nn = 1
+                kk = 1
+                for t in range(1, min(k, n - k) + 1):
+                    nn *= n
+                    kk *= t
+                    n -= 1
+                
+                self.entry.delete(0, END)
+                self.entry.insert(0, self.calc(nn // kk))
             else:
                 self.entry.delete(0, END)
                 self.entry.insert(0, '0')
@@ -129,37 +152,37 @@ class Example(Frame):
                 num1 = self.calc(num1_join)
                 num2 = self.calc(num2_join)
 
-            if type(num1) and type(num2) == int:
-                if 'плюс' in form:
-                    result_plus = num1 + num2
-                    str_plus = self.calc(result_plus)
-                    self.entry.insert(END, f' = {str_plus}')
-                    if result_plus == 0:
-                        self.entry.insert(END, f'ноль')
-                elif 'минус' in form:
-                    result_subtraction = num1 - num2
-                    str_subtraction = self.calc(result_subtraction)
-                    self.entry.insert(END, f' = {str_subtraction}')
-                    if result_subtraction == 0:
-                        self.entry.insert(END, f'ноль')
-                elif 'умножить' in form:
-                    result_multiply = num1 * num2
-                    str_multiply = self.calc(result_multiply)
-                    self.entry.insert(END, f' = {str_multiply}')
-                    if result_multiply == 0:
-                        self.entry.insert(END, f'ноль')
-                elif 'делить' in form:
-                    result_division = num1 / num2
-                    str_division = self.calc(result_division)
-                    self.entry.insert(END, f' = {str_division}')
-                    if result_division == 0:
-                        self.entry.insert(END, f'ноль')
-                elif 'степень' in form:
-                    result_degree = num1 ** num2
-                    str_degree = self.calc(result_degree)
-                    self.entry.insert(END, f' = {str_degree}')
-                    if result_degree == 0:
-                        self.entry.insert(END, f'ноль')
+            
+            if 'плюс' in form:
+                result_plus = num1 + num2
+                str_plus = self.calc(result_plus)
+                self.entry.insert(END, f' = {str_plus}')
+                if result_plus == 0:
+                    self.entry.insert(END, f'ноль')
+            elif 'минус' in form:
+                result_subtraction = num1 - num2
+                str_subtraction = self.calc(result_subtraction)
+                self.entry.insert(END, f' = {str_subtraction}')
+                if result_subtraction == 0:
+                    self.entry.insert(END, f'ноль')
+            elif 'умножить' in form:
+                result_multiply = num1 * num2
+                str_multiply = self.calc(result_multiply)
+                self.entry.insert(END, f' = {str_multiply}')
+                if result_multiply == 0:
+                    self.entry.insert(END, f'ноль')
+            elif 'делить' in form:
+                result_division = num1 / num2
+                str_division = self.calc(result_division)
+                self.entry.insert(END, f' = {str_division}')
+                if result_division == 0:
+                    self.entry.insert(END, f'ноль')
+            elif 'степень' in form:
+                result_degree = num1 ** num2
+                str_degree = self.calc(result_degree)
+                self.entry.insert(END, f' = {str_degree}')
+                if result_degree == 0:
+                    self.entry.insert(END, f'ноль')
 
     def calc(self, var):
         a = {"один": 1, "два": 2, "три": 3, "четыре": 4, "пять": 5, "шесть": 6, "семь": 7, "восемь": 8,
@@ -325,4 +348,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
